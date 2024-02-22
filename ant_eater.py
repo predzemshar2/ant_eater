@@ -10,6 +10,7 @@ score = 0
 gone = 0
 Ant_Eater, Ant_Hill, Ant, Grass, Stone = '☺', '▲', '¤', '░', '█'
 
+
 size = 10
 X = Y = size // 2
 
@@ -107,12 +108,40 @@ def move_down():
         draw()
 
 
-def spawn_ant():
-    # Спавн муравья на случайной пустой клетке поля
-    rnd_X = random.randint(0, size - 1)
-    rnd_Y = random.randint(0, size - 1)
-    if Field[rnd_Y][rnd_X] == Grass and rnd_X <= 10 and rnd_Y <= 10:
-        Field[rnd_Y][rnd_X] = Ant
+ants = []
+
+def move_ants(ants):
+    x_remove = y_remove = -1
+    for i in range(len(ants)):
+        x = ants[i][0]
+        y = ants[i][1]
+        rnd_X = random.randint(-1, 1)
+        rnd_Y = random.randint(-1,1)
+        if can_move(x,y,rnd_X,rnd_Y):
+            ants[i] = [x+rnd_X,y+rnd_Y]
+            Field[y][x] = Grass
+            if ((x+rnd_X == 0) or (x+rnd_X == size-1) or
+                    (y+rnd_Y == 0) or (y+rnd_Y == size-1)):
+                global gone
+                gone += 1
+                x_remove = x+rnd_X
+                y_remove = y+rnd_Y
+            else:
+                Field[y+rnd_Y][x+rnd_X] = Ant
+    if y_remove > -1:
+        ants.remove([x_remove, y_remove])
+
+def spawn(hill):
+    rnd_X = random.randint(-1, 1)
+    rnd_Y = random.randint(-1,1)
+    x = hill[0][0]
+    y = hill[0][1]
+    n = hill[0][2]
+    if can_move(x,y,rnd_X,rnd_Y) and n>0:
+        ants.append([x+rnd_X,y+rnd_Y])
+        Field[y+rnd_Y][x+rnd_X] = Ant
+        return True
+    return False
 
 
 last_t = time.time()
