@@ -10,7 +10,6 @@ score = 0
 gone = 0
 Ant_Eater, Ant_Hill, Ant, Grass, Stone = '☺', '▲', '¤', '░', '█'
 
-
 size = 10
 X = Y = size // 2
 
@@ -107,7 +106,6 @@ def move_down():
         move_ant_eater(X, Y, 0, 1)
         draw()
 
-
 ants = []
 
 def move_ants(ants):
@@ -152,14 +150,13 @@ keyboard.add_hotkey('down', move_down)
 keyboard.add_hotkey('esc', exit1)
 while Game:
     t = time.time()
-    if t - last_t > 2:
+    if t-last_t>2:
+        move_ants(ants)
+        rnd_hill = random.randint(0,len(anthills)-1)
+        if spawn(anthills[rnd_hill]):
+            anthills[rnd_hill][0][2] -= 1
         draw()
-        print(t)
+        #print(t)
         last_t = t
-    if score < len(anthills):
-        spawn_ant()
-    else:
-        Game = False
-    time.sleep(1)
 
 keyboard.unhook_all_hotkeys()
