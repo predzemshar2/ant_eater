@@ -1,3 +1,4 @@
+#Автор изменений: Коротыш Ярослав
 import keyboard
 import time
 import os
